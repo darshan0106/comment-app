@@ -1,0 +1,50 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: nestjs_comments_db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d nestjs_comments_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+    restart: on-failure
+    ports:
+      - "3000:3000" # Host port 3000 maps to backend container port 3000
+    environment:
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_USERNAME: user
+      DATABASE_PASSWORD: password
+      DATABASE_NAME: nestjs_comments_db
+      JWT_SECRET: yourStrongJwtSecretKey # IMPORTANT: Use a strong secret!
+      PORT: 3000
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # Inside the container, the frontend will call the backend service by its name 'backend'
+        NEXT_PUBLIC_API_URL: http://localhost:3000
+    restart: on-failure
+    ports:
+      - "80:3000" # We map host port 80 to the frontend container's port 3000
+    depends_on:
+      - backend
+
+volumes:
+  db_data:
