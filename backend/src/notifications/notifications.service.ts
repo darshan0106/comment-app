@@ -1,10 +1,9 @@
-// backend/src/notifications/notifications.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Notification } from '../entities/notification.entity';
-import { User } from '../entities/user.entity'; // To get user data for message
-import { Comment } from '../entities/comment.entity'; // To get comment data for message
+import { User } from '../entities/user.entity';
+import { Comment } from '../entities/comment.entity';
 import { Pagination } from '../common/interfaces/pagination.interface';
 
 @Injectable()
@@ -15,17 +14,13 @@ export class NotificationsService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     @InjectRepository(Comment)
-    private commentsRepository: Repository<Comment>, // Inject Comment repo to fetch parent
+    private commentsRepository: Repository<Comment>,
   ) {}
 
-  /**
-   * Create a notification for a user.
-   * This will be called internally when a comment is replied to.
-   */
   async createNotification(
     recipientUserId: string,
     replyingUserId: string,
-    commentId: string, // The ID of the comment that was replied to
+    commentId: string,
   ): Promise<Notification> {
     const recipientUser = await this.usersRepository.findOne({
       where: { id: recipientUserId },
@@ -38,13 +33,12 @@ export class NotificationsService {
     });
 
     if (!recipientUser || !replyingUser || !repliedToComment) {
-      // This should ideally not happen if calling service correctly, but good for safety
       throw new NotFoundException(
         'Required user or comment for notification not found.',
       );
     }
 
-    const message = `${replyingUser.email} replied to your comment: "${repliedToComment.content.substring(0, 50)}..."`; // Truncate content
+    const message = `${replyingUser.email} replied to your comment: "${repliedToComment.content.substring(0, 50)}..."`;
 
     const notification = this.notificationsRepository.create({
       userId: recipientUser.id,
@@ -56,9 +50,6 @@ export class NotificationsService {
     return this.notificationsRepository.save(notification);
   }
 
-  /**
-   * Get all unread notifications for a specific user.
-   */
   async getUnreadNotifications(
     userId: string,
     page: number = 1,
@@ -87,9 +78,6 @@ export class NotificationsService {
     };
   }
 
-  /**
-   * Get all notifications for a specific user (read and unread).
-   */
   async getAllNotifications(
     userId: string,
     page: number = 1,
@@ -118,9 +106,6 @@ export class NotificationsService {
     };
   }
 
-  /**
-   * Mark a notification as read.
-   */
   async markAsRead(
     notificationId: string,
     userId: string,

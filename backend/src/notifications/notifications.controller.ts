@@ -11,10 +11,10 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { NotificationsService } from './notifications.service';
-import { AuthenticatedRequest } from '../auth/jwt.strategy'; // Re-use the interface
+import { AuthenticatedRequest } from '../auth/jwt.strategy';
 
 @Controller('notifications')
-@UseGuards(AuthGuard('jwt')) // Protect all routes
+@UseGuards(AuthGuard('jwt'))
 export class NotificationsController {
   constructor(private notificationsService: NotificationsService) {}
 

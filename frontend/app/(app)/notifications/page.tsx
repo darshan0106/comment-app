@@ -3,13 +3,13 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { apiGetAllNotifications, apiMarkNotificationAsRead } from "@/lib/api";
 import { formatDate } from "@/lib/utils";
-import { useNotifications } from "@/hooks/useNotifications"; // Import the hook
+import { useNotifications } from "@/hooks/useNotifications";
 import { Check } from "lucide-react";
 
 export default function NotificationsPage() {
   const [notifications, setNotifications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const { fetchUnreadCount } = useNotifications(); // Get the refetch function from context
+  const { fetchUnreadCount } = useNotifications();
 
   const fetchNotifications = async () => {
     try {
@@ -29,8 +29,8 @@ export default function NotificationsPage() {
   const handleMarkAsRead = async (id: string) => {
     try {
       await apiMarkNotificationAsRead(id);
-      await fetchNotifications(); // Refresh the list on this page
-      await fetchUnreadCount(); // **CRUCIAL:** Refresh the global count for the header
+      await fetchNotifications();
+      await fetchUnreadCount();
     } catch (error) {
       console.error("Failed to mark as read", error);
     }

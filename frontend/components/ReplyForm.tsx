@@ -1,25 +1,31 @@
 "use client";
-import { useState } from 'react';
-import { apiCreatePost, apiEditPost } from '@/lib/api';
+import { useState } from "react";
+import { apiCreatePost, apiEditPost } from "@/lib/api";
 
 interface ReplyFormProps {
   parentId?: string;
   initialContent?: string;
-  replyId?: string; // For editing
+  replyId?: string;
   onCommentPosted: () => void;
   onCancel?: () => void;
 }
 
-export default function ReplyForm({ parentId, initialContent = '', replyId, onCommentPosted, onCancel }: ReplyFormProps) {
+export default function ReplyForm({
+  parentId,
+  initialContent = "",
+  replyId,
+  onCommentPosted,
+  onCancel,
+}: ReplyFormProps) {
   const [content, setContent] = useState(initialContent);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const isEditing = !!replyId;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
+    setError("");
     if (!content.trim()) {
-      setError('Reply cannot be empty.');
+      setError("Reply cannot be empty.");
       return;
     }
     try {
@@ -28,7 +34,7 @@ export default function ReplyForm({ parentId, initialContent = '', replyId, onCo
       } else {
         await apiCreatePost({ content, parentId });
       }
-      setContent('');
+      setContent("");
       onCommentPosted();
     } catch (err: any) {
       setError(err.message);
@@ -46,11 +52,18 @@ export default function ReplyForm({ parentId, initialContent = '', replyId, onCo
       />
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
       <div className="flex gap-2 mt-2">
-        <button type="submit" className="bg-slate-800 text-white px-4 py-1 rounded-md text-sm hover:bg-slate-900">
-          {isEditing ? 'Save' : 'Reply'}
+        <button
+          type="submit"
+          className="bg-slate-800 text-white px-4 py-1 rounded-md text-sm hover:bg-slate-900"
+        >
+          {isEditing ? "Save" : "Reply"}
         </button>
         {onCancel && (
-          <button type="button" onClick={onCancel} className="bg-slate-200 text-slate-800 px-4 py-1 rounded-md text-sm hover:bg-slate-300">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="bg-slate-200 text-slate-800 px-4 py-1 rounded-md text-sm hover:bg-slate-300"
+          >
             Cancel
           </button>
         )}

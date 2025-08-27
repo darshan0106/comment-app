@@ -1,6 +1,6 @@
 "use client";
-import { createContext, useState, useEffect, ReactNode } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import { createContext, useState, useEffect, ReactNode } from "react";
+import { jwtDecode } from "jwt-decode";
 
 interface User {
   id: string;
@@ -27,27 +27,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     try {
-      const token = localStorage.getItem('accessToken');
+      const token = localStorage.getItem("accessToken");
       if (token) {
         const decodedUser: User = jwtDecode(token);
         setUser(decodedUser);
       }
     } catch (error) {
       console.error("Failed to decode token", error);
-      localStorage.removeItem('accessToken');
+      localStorage.removeItem("accessToken");
     } finally {
       setIsLoading(false);
     }
   }, []);
 
   const login = (token: string) => {
-    localStorage.setItem('accessToken', token);
+    localStorage.setItem("accessToken", token);
     const decodedUser: User = jwtDecode(token);
     setUser(decodedUser);
   };
 
   const logout = () => {
-    localStorage.removeItem('accessToken');
+    localStorage.removeItem("accessToken");
     setUser(null);
   };
 

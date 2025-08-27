@@ -21,14 +21,14 @@ services:
       context: ./backend
     restart: on-failure
     ports:
-      - "3000:3000" # Host port 3000 maps to backend container port 3000
+      - "3000:3000"
     environment:
       DATABASE_HOST: db
       DATABASE_PORT: 5432
       DATABASE_USERNAME: user
       DATABASE_PASSWORD: password
       DATABASE_NAME: nestjs_comments_db
-      JWT_SECRET: yourStrongJwtSecretKey # IMPORTANT: Use a strong secret!
+      JWT_SECRET: yourStrongJwtSecretKey
       PORT: 3000
     depends_on:
       db:
@@ -38,11 +38,10 @@ services:
     build:
       context: ./frontend
       args:
-        # Inside the container, the frontend will call the backend service by its name 'backend'
-        NEXT_PUBLIC_API_URL: http://localhost:3000
+        NEXT_PUBLIC_API_URL: https://postthread-backend.onrender.com
     restart: on-failure
     ports:
-      - "80:3000" # We map host port 80 to the frontend container's port 3000
+      - "80:3000"
     depends_on:
       - backend
 

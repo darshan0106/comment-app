@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { apiLogin } from "@/lib/api";
-import Link from "next/link"; // Import the Link component
+import Link from "next/link";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");

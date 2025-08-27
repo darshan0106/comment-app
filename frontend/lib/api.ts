@@ -1,5 +1,3 @@
-// This file centralizes all API calls to your NestJS backend.
-
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 async function fetchApi(path: string, options: RequestInit = {}) {
@@ -29,15 +27,13 @@ async function fetchApi(path: string, options: RequestInit = {}) {
   return response.json();
 }
 
-// Auth
 export const apiRegister = (data: any) =>
   fetchApi("/auth/register", { method: "POST", body: JSON.stringify(data) });
 export const apiLogin = (data: any) =>
   fetchApi("/auth/login", { method: "POST", body: JSON.stringify(data) });
 
-// Posts & Comments (Replies)
-export const apiGetTopLevelPosts = () => fetchApi("/comments"); // Gets all top-level "posts"
-export const apiGetPostById = (id: string) => fetchApi(`/comments/${id}`); // **NEW** - Gets a single post/comment
+export const apiGetTopLevelPosts = () => fetchApi("/comments");
+export const apiGetPostById = (id: string) => fetchApi(`/comments/${id}`);
 export const apiGetRepliesForPost = (parentId: string) =>
   fetchApi(`/comments?parentId=${parentId}`);
 export const apiCreatePost = (data: { content: string; parentId?: string }) =>
@@ -49,7 +45,6 @@ export const apiDeletePost = (id: string) =>
 export const apiRestorePost = (id: string) =>
   fetchApi(`/comments/${id}/restore`, { method: "POST" });
 
-// Notifications
 export const apiGetAllNotifications = () => fetchApi("/notifications/all");
 export const apiMarkNotificationAsRead = (id: string) =>
   fetchApi(`/notifications/${id}/read`, { method: "POST" });

@@ -1,4 +1,3 @@
-// backend/src/entities/user.entity.ts
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -9,7 +8,7 @@ import {
 } from 'typeorm';
 import { Comment } from './comment.entity';
 import { Notification } from './notification.entity';
-import * as bcrypt from 'bcryptjs'; // Import bcryptjs
+import * as bcrypt from 'bcryptjs';
 
 @Entity()
 export class User {
@@ -32,8 +31,7 @@ export class User {
   @BeforeUpdate()
   async hashPassword() {
     if (this.password) {
-      // Only hash if password exists (e.g., during registration or password change)
-      this.password = await bcrypt.hash(this.password, 10); // 10 is the salt rounds
+      this.password = await bcrypt.hash(this.password, 10);
     }
   }
 

@@ -1,4 +1,3 @@
-// backend/src/entities/comment.entity.ts
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -11,10 +10,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from './user.entity'; // Import User entity
+import { User } from './user.entity';
 
 @Entity()
-@Tree('closure-table') // Enables nested (tree-like) structure for comments
+@Tree('closure-table')
 export class Comment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -26,10 +25,10 @@ export class Comment {
   createdAt: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date; // For edit tracking
+  updatedAt: Date;
 
   @Column({ default: false })
-  isDeleted: boolean; // Soft delete
+  isDeleted: boolean;
 
   @Column({ type: 'timestamp with time zone', nullable: true })
   deletedAt: Date | null;
@@ -38,12 +37,11 @@ export class Comment {
   user: User;
 
   @Column()
-  userId: string; // Column to store the ID of the user who posted the comment
+  userId: string;
 
-  // For nested comments:
   @TreeParent()
   parent: Comment;
 
-  @TreeChildren({ cascade: ['insert', 'update'] }) // When a parent is saved, children are also saved
+  @TreeChildren({ cascade: ['insert', 'update'] })
   children: Comment[];
 }

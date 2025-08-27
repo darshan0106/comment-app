@@ -1,4 +1,3 @@
-// backend/src/entities/notification.entity.ts
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -15,7 +14,7 @@ export class Notification {
   id: string;
 
   @Column()
-  message: string; // e.g., "Your comment was replied to by [username]"
+  message: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -24,17 +23,17 @@ export class Notification {
   isRead: boolean;
 
   @ManyToOne(() => User, (user) => user.notifications, { onDelete: 'CASCADE' })
-  user: User; // The user who receives the notification
+  user: User;
 
   @Column()
-  userId: string; // Foreign key for the recipient user
+  userId: string;
 
   @ManyToOne(() => Comment, (comment) => comment.id, {
     onDelete: 'SET NULL',
     nullable: true,
   })
-  comment: Comment; // The comment that was replied to (if any)
+  comment: Comment;
 
   @Column({ nullable: true })
-  commentId: string | null; // Foreign key for the related comment
+  commentId: string | null;
 }

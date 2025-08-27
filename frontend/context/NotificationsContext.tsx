@@ -31,7 +31,7 @@ export const NotificationsProvider = ({
     if (user) {
       try {
         const response = await apiGetUnreadNotifications();
-        setUnreadCount(response.data.length); // Assuming the API returns an array of unread notifications
+        setUnreadCount(response.data.length);
       } catch (error) {
         console.error("Failed to fetch unread notifications count", error);
         setUnreadCount(0);
@@ -42,12 +42,11 @@ export const NotificationsProvider = ({
   }, [user]);
 
   useEffect(() => {
-    fetchUnreadCount(); // Fetch on initial load or when user changes
+    fetchUnreadCount();
 
-    // Optional: Poll for new notifications every minute
     const interval = setInterval(fetchUnreadCount, 60000);
 
-    return () => clearInterval(interval); // Cleanup on unmount
+    return () => clearInterval(interval);
   }, [fetchUnreadCount]);
 
   return (

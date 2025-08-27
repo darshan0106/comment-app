@@ -1,4 +1,3 @@
-// backend/src/auth/auth.service.ts
 import {
   Injectable,
   ConflictException,
@@ -8,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from './jwt.strategy'; // Import JwtPayload
+import { JwtPayload } from './jwt.strategy';
 
 @Injectable()
 export class AuthService {
@@ -30,7 +29,7 @@ export class AuthService {
     }
 
     const newUser = this.usersRepository.create({ email, password });
-    await this.usersRepository.save(newUser); // password will be hashed by @BeforeInsert hook
+    await this.usersRepository.save(newUser);
 
     const payload: JwtPayload = { id: newUser.id, email: newUser.email };
     const accessToken = this.jwtService.sign(payload);

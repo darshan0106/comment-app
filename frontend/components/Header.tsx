@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
 import { useAuth } from "@/hooks/useAuth";
-import { useNotifications } from "@/hooks/useNotifications"; // Import the new hook
+import { useNotifications } from "@/hooks/useNotifications";
 import { Bell, PlusSquare } from "lucide-react";
 
 export default function Header() {
   const { user, logout, isLoading } = useAuth();
-  const { unreadCount } = useNotifications(); // Get the unread count from context
+  const { unreadCount } = useNotifications();
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -29,7 +29,6 @@ export default function Header() {
                 <PlusSquare size={16} /> Create Post
               </Link>
 
-              {/* --- UPDATED NOTIFICATION BELL --- */}
               <Link
                 href="/notifications"
                 className="relative text-slate-600 hover:text-slate-900"
@@ -39,7 +38,6 @@ export default function Header() {
                   <span className="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white" />
                 )}
               </Link>
-              {/* --- END OF UPDATE --- */}
 
               <button
                 onClick={logout}

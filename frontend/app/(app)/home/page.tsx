@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useState } from 'react';
-import PostCard from '@/components/PostCard';
-import { apiGetTopLevelPosts } from '@/lib/api';
+import { useEffect, useState } from "react";
+import PostCard from "@/components/PostCard";
+import { apiGetTopLevelPosts } from "@/lib/api";
 
 export default function HomePage() {
   const [posts, setPosts] = useState([]);

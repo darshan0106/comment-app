@@ -18,10 +18,10 @@ import { NotificationsModule } from './notifications/notifications.module';
             type: 'postgres',
             url: process.env.DATABASE_URL,
             ssl: {
-              rejectUnauthorized: false, // Required for Render's managed DB
+              rejectUnauthorized: false,
             },
             entities: [User, Comment, Notification],
-            synchronize: true, // For this project, true is okay. For serious production, use migrations.
+            synchronize: true,
           }
         : {
             type: 'postgres',
@@ -32,7 +32,8 @@ import { NotificationsModule } from './notifications/notifications.module';
             database: process.env.DATABASE_NAME,
             entities: [User, Comment, Notification],
             synchronize: true,
-          },),
+          },
+    ),
     ScheduleModule.forRoot(),
     AuthModule,
     CommentsModule,
