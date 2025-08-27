@@ -12,16 +12,27 @@ import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DATABASE_HOST,
-      port: parseInt(process.env.DATABASE_PORT as string, 10),
-      username: process.env.DATABASE_USERNAME,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
-      entities: [User, Comment, Notification],
-      synchronize: true,
-    }),
+    TypeOrmModule.forRoot(
+      process.env.DATABASE_URL
+        ? {
+            type: 'postgres',
+            url: process.env.DATABASE_URL,
+            ssl: {
+              rejectUnauthorized: false, // Required for Render's managed DB
+            },
+            entities: [User, Comment, Notification],
+            synchronize: true, // For this project, true is okay. For serious production, use migrations.
+          }
+        : {
+            type: 'postgres',
+            host: process.env.DATABASE_HOST,
+            port: parseInt(process.env.DATABASE_PORT as string, 10),
+            username: process.env.DATABASE_USERNAME,
+            password: process.env.DATABASE_PASSWORD,
+            database: process.env.DATABASE_NAME,
+            entities: [User, Comment, Notification],
+            synchronize: true,
+          },),
     ScheduleModule.forRoot(),
     AuthModule,
     CommentsModule,
